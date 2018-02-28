@@ -1,24 +1,29 @@
 module Bob exposing (..)
 
 import Regex exposing (regex, replace, contains)
-import String exposing (isEmpty, endsWith)
+import String exposing (isEmpty, endsWith, trim)
 
-type Message = Question | Shout | ForcefulQuestion | Nonsense | Basic | Silence
+type Message = Question |
+               Shout |
+               ForcefulQuestion |
+               Nonsense |
+               Basic |
+               Silence
 
 hey : String -> String
 hey input =
     case message input of
-        Shout -> "Whoa, chill out!"
-        Question -> "Sure."
-        Silence -> "Fine. Be that way!"
+        Shout            -> "Whoa, chill out!"
+        Question         -> "Sure."
+        Silence          -> "Fine. Be that way!"
         ForcefulQuestion -> "Calm down, I know what I'm doing!"
-        _ -> "Whatever."
+        _                -> "Whatever."
 
 question = endsWith "?"
 hasUpper = contains (regex "[A-Z]")
 hasLower = contains (regex "[a-z]")
 shout input = hasUpper input && not (hasLower input)
-silence input = replace Regex.All (regex "\\s") (\_ -> "") input
+silence input = trim input
                 |> isEmpty
 
 message input =
